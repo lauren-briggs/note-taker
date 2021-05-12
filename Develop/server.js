@@ -20,22 +20,37 @@ app.get('/notes', function (req, res) {
 });
 
 
-
+// Get existing notes
 app.get('/api/notes', (req, res) => {
     const data = fs.readFileSync("db/db.json", "utf8");
     res.status(200).send(JSON.parse(data));
 })
 
+// Post new notes
 app.post('/api/notes', (req, res) => {
     const newNote = req.body;
     const data = JSON.parse(fs.readFileSync("db/db.json", "utf8"));
+
+    // Set new notes id
+    newNote.id = data.length;
+    console.log(newNote.id);
+
     // Pushing new note onto data const
     data.push(newNote);
     // Writing db.json file with new data
     fs.writeFileSync("db/db.json", JSON.stringify(data));
+
     res.status(201).send(`Note created: "${newNote.title}`);
     console.log(`Note created: ${newNote.title}`);
 })
+
+app.get("/api/notes/:id", function (req, res) {
+    const data = JSON.parse(fs.readFileSync("db/db.json", "utf8"));
+
+    console.log("req.body.id: " + req.body.id);
+    console.log(data[req.params.id]);
+    res.json(data[req.params.id]);
+});
 
 
 app.listen(PORT, () => {
