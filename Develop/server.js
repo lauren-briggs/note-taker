@@ -46,15 +46,30 @@ app.post('/api/notes', (req, res) => {
 
 app.get("/api/notes/:id", function (req, res) {
     const data = JSON.parse(fs.readFileSync("db/db.json", "utf8"));
-
     console.log("req.body.id: " + req.body.id);
     console.log(data[req.params.id]);
     res.json(data[req.params.id]);
 });
 
 
+app.delete("/api/notes/:id", function (req, res) {
+    const data = JSON.parse(fs.readFileSync("db/db.json", "utf8"));
+
+    let id = req.params.id.toString();
+    console.log(`ID to be deleted: ${id}`);
+
+    console.log(data);
+    let filteredData = data.filter(function (note) {
+        return note.id != req.params.id;
+    });
+
+    console.log(filteredData);
+
+    fs.writeFileSync("db/db.json", JSON.stringify(filteredData));
+    console.log("note deleted");
+    res.send(JSON.parse(filteredData));
+})
+
 app.listen(PORT, () => {
     console.log(`Example app listening at http://localhost:${PORT}`);
 });
-
-
