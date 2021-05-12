@@ -107,11 +107,14 @@ const handleNewNoteView = (e) => {
 };
 
 const handleRenderSaveBtn = () => {
+  console.log("handeRenderSaveBtn called")
   // if note title or note text fields are empty, hide the save button
   if (!noteTitle.value.trim() || !noteText.value.trim()) {
     hide(saveNoteBtn);
+    console.log("hiding save button");
   } else {
     show(saveNoteBtn);
+    console.log("showing save button");
   }
 };
 
